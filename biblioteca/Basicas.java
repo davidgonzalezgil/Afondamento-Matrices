@@ -83,7 +83,8 @@ public class Basicas {
      */
     public static boolean esMatrizDiagonal(int[][] matriz) {
         int filas = matriz.length;
-        if (filas == 0) return false;
+        if (filas == 0)
+            return false;
         int columnas = matriz[0].length;
 
         // 1. Comprobar que es una matriz cuadrada
@@ -149,14 +150,17 @@ public class Basicas {
 
     // Método que multiplica dos matrices de enteros
     public static int[][] multiplicarMatrices(int[][] matriz1, int[][] matriz2) {
+
         int filas1 = matriz1.length;
         int columnas1 = matriz1[0].length;
         int filas2 = matriz2.length;
         int columnas2 = matriz2[0].length;
 
-        // Validación de dimensiones: columnas de la 1ª deben ser iguales a filas de la 2ª
+        // Validación de dimensiones: columnas de la 1ª deben ser iguales a filas de la
+        // 2ª
         if (columnas1 != filas2) {
-            throw new IllegalArgumentException("El número de columnas de la primera matriz debe coincidir con el número de filas de la segunda.");
+            throw new IllegalArgumentException(
+                    "El número de columnas de la primera matriz debe coincidir con el número de filas de la segunda.");
         }
 
         int[][] resultado = new int[filas1][columnas2];
@@ -170,5 +174,48 @@ public class Basicas {
         }
 
         return resultado;
+    }
+
+    //función que calcula el determinante de una matriz cuadrada de enteros
+    public static int determinant(int[][] array) {
+        int rows = array.length;
+        int cols = array[0].length;
+        if (rows != cols) {
+            throw new IllegalArgumentException("la matriz debe ser cuadrada");
+        }
+        if (rows == 1) {
+            return array[0][0];
+        }
+        if (rows == 2) {
+            return array[0][0] * array[1][1] - array[0][1] * array[1][0];
+        }
+        int determinant = 0;
+        for (int j = 0; j < cols; j++) {
+            determinant += Math.pow(-1, j) * array[0][j] * determinant(minor(array, 0, j));
+        }
+        return determinant;
+    }
+
+    public static int[][] minor(int[][] array, int row, int col) {
+        int rows = array.length;
+        int cols = array[0].length;
+        int[][] minor = new int[rows - 1][cols - 1];
+
+        int mi = 0;
+        for (int i = 0; i < rows; i++) {
+            if (i == row)
+                continue;
+
+            int mj = 0;
+            for (int j = 0; j < cols; j++) {
+                if (j == col)
+                    continue;
+                minor[mi][mj] = array[i][j];
+                mj++;
+            }
+            mi++;
+        }
+
+        return minor;
     }
 }
